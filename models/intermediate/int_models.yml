@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: int_order_items_enriched
+    description: >
+      Order line items joined with product catalogue and inventory cost data.
+      Core grain for all revenue and margin calculations. One row per order item.
+    columns:
+      - name: order_item_id
+        tests: [unique, not_null]
+      - name: sale_price
+        tests: [not_null]
+      - name: unit_cost
+        description: "Cost from inventory_items; falls back to product catalogue cost."
+
+  - name: int_orders_with_metrics
+    description: >
+      Order header enriched with aggregated line-item metrics (revenue, cost,
+      gross profit, fulfilment timing). One row per order.
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+
+  - name: int_user_order_history
+    description: >
+      One row per registered user. Combines user attributes with their full
+      lifetime purchase history and a simple RFM-style segment bucket.
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              values: ['no_orders', 'one_time', 'repeat', 'loyal']
+
+  - name: int_session_events
+    description: >
+      Web events rolled up to session level with funnel-step counts and a
+      conversion flag. One row per session.
+    columns:
+      - name: session_id
+        tests: [unique, not_null]

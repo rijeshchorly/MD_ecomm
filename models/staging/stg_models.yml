@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Cleaned and renamed orders. One row per order."
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['Cancelled', 'Complete', 'Processing', 'Returned', 'Shipped']
+
+  - name: stg_order_items
+    description: "Cleaned order line items. One row per item within an order."
+    columns:
+      - name: order_item_id
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: sale_price
+        tests: [not_null]
+
+  - name: stg_users
+    description: "Cleaned customer accounts. One row per user."
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+      - name: email
+        tests: [unique, not_null]
+
+  - name: stg_products
+    description: "Cleaned product catalogue. One row per product."
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+
+  - name: stg_inventory_items
+    description: "Individual inventory units. One row per physical item."
+    columns:
+      - name: inventory_item_id
+        tests: [unique, not_null]
+
+  - name: stg_events
+    description: "Web-session events. One row per event."
+    columns:
+      - name: event_id
+        tests: [unique, not_null]
+
+  - name: stg_distribution_centers
+    description: "Physical distribution centres. One row per centre."
+    columns:
+      - name: distribution_center_id
+        tests: [unique, not_null]
