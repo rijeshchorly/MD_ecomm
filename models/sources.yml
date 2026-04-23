@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: MD_Ecomm
+  - name: Ecomm
     database: Ecomm
     schema: main
     description: "Raw TheLook ecommerce tables loaded from Kaggle CSV files."

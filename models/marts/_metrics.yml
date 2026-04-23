@@ -1,0 +1,105 @@
+metrics:
+
+  # ── Revenue ───────────────────────────────────────────────────────────────
+
+  - name: total_revenue
+    label: "Total Revenue"
+    description: "Sum of sale price across all non-cancelled order items"
+    type: simple
+    type_params:
+      measure: revenue
+    filter: |
+      {{ Dimension('order_item__status') }} != 'Cancelled'
+
+  - name: total_cost
+    label: "Total Cost"
+    description: "Sum of unit cost across all non-cancelled order items"
+    type: simple
+    type_params:
+      measure: cost
+    filter: |
+      {{ Dimension('order_item__status') }} != 'Cancelled'
+
+  - name: gross_profit
+    label: "Gross Profit"
+    description: "Total gross profit (revenue minus cost) excluding cancelled items"
+    type: simple
+    type_params:
+      measure: gross_profit
+    filter: |
+      {{ Dimension('order_item__status') }} != 'Cancelled'
+
+  # Ratio: references the gross_profit and total_revenue metrics above
+  - name: gross_margin_pct
+    label: "Gross Margin %"
+    description: "Gross profit as a percentage of revenue, excluding cancelled items"
+    type: ratio
+    type_params:
+      numerator: gross_profit
+      denominator: total_revenue
+
+
+  # ── Orders ────────────────────────────────────────────────────────────────
+
+  - name: total_orders
+    label: "Total Orders"
+    description: "Count of distinct orders excluding cancelled"
+    type: simple
+    type_params:
+      measure: order_count
+    filter: |
+      {{ Dimension('order__status') }} != 'Cancelled'
+
+  # Ratio: total_revenue (order_items) / total_orders (orders), joined via order entity
+  - name: avg_order_value
+    label: "Average Order Value"
+    description: "Average revenue per non-cancelled order"
+    type: ratio
+    type_params:
+      numerator: total_revenue
+      denominator: total_orders
+
+
+  # ── Items ─────────────────────────────────────────────────────────────────
+
+  - name: total_units_sold
+    label: "Total Units Sold"
+    description: "Count of order items excluding cancelled"
+    type: simple
+    type_params:
+      measure: units_sold
+    filter: |
+      {{ Dimension('order_item__status') }} != 'Cancelled'
+
+  - name: total_returned_units
+    label: "Total Returned Units"
+    description: "Count of returned order items"
+    type: simple
+    type_params:
+      measure: returned_units
+
+  # Ratio: returned_units / units_sold, both excluding cancelled
+  - name: return_rate
+    label: "Return Rate"
+    description: "Ratio of returned units to total non-cancelled units sold"
+    type: ratio
+    type_params:
+      numerator: total_returned_units
+      denominator: total_units_sold
+
+  - name: avg_days_to_deliver
+    label: "Avg Days to Deliver"
+    description: "Average number of days from shipment to delivery"
+    type: simple
+    type_params:
+      measure: avg_days_to_deliver
+
+
+  # ── Customers ─────────────────────────────────────────────────────────────
+
+  - name: total_customers
+    label: "Total Customers"
+    description: "Count of distinct registered customers"
+    type: simple
+    type_params:
+      measure: customer_count

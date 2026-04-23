@@ -1,5 +1,5 @@
 with products as (
-    select * from {{ source('MD_Ecomm', 'products') }}
+    select * from {{ source('Ecomm', 'products') }}
 ),
 
 stg_products as (

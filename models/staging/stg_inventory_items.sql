@@ -1,5 +1,5 @@
 with inventory_items as (
-    select * from {{ source('MD_Ecomm', 'inventory_items') }}
+    select * from {{ source('Ecomm', 'inventory_items') }}
 ),
 
 stg_inventory_items as (

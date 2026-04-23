@@ -1,5 +1,5 @@
 with order_items as (
-    select * from {{ source('MD_Ecomm', 'order_items') }}
+    select * from {{ source('Ecomm', 'order_items') }}
 ),
 
 stg_order_items as (

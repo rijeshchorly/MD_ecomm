@@ -1,5 +1,5 @@
 with users as (
-    select * from {{ source('MD_Ecomm', 'users') }}
+    select * from {{ source('Ecomm', 'users') }}
 ),
 
 stg_users as (

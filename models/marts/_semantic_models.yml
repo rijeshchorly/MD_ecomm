@@ -1,0 +1,160 @@
+semantic_models:
+
+  # ── Order Items (line-item grain) ─────────────────────────────────────────
+  # Core fact for revenue, margin, and return metrics. One row per order item.
+  - name: order_items
+    model: ref('int_order_items_enriched')
+    description: >
+      Order line item grain — one row per order item. Primary source for
+      revenue, cost, gross profit, and return rate metrics.
+    defaults:
+      agg_time_dimension: created_at
+
+    entities:
+      - name: order_item
+        type: primary
+        expr: order_item_id
+      - name: order
+        type: foreign
+        expr: order_id
+      - name: user
+        type: foreign
+        expr: user_id
+      - name: product
+        type: foreign
+        expr: product_id
+
+    dimensions:
+      - name: created_at
+        type: time
+        type_params:
+          time_granularity: day
+      - name: status
+        type: categorical
+      - name: is_returned
+        type: categorical
+      - name: product_name
+        type: categorical
+      - name: product_category
+        type: categorical
+      - name: product_brand
+        type: categorical
+      - name: product_department
+        type: categorical
+
+    measures:
+      - name: revenue
+        description: "Sum of sale price across order items"
+        agg: sum
+        expr: sale_price
+      - name: cost
+        description: "Sum of unit cost across order items"
+        agg: sum
+        expr: unit_cost
+      - name: gross_profit
+        description: "Sum of gross profit (sale_price minus unit_cost)"
+        agg: sum
+        expr: gross_profit
+      - name: units_sold
+        description: "Count of order items"
+        agg: count
+        expr: order_item_id
+      - name: returned_units
+        description: "Count of returned order items"
+        agg: sum
+        expr: "case when is_returned then 1 else 0 end"
+      - name: avg_days_to_deliver
+        description: "Average days from shipment to delivery"
+        agg: average
+        expr: days_to_deliver
+
+
+  # ── Orders (order grain) ───────────────────────────────────────────────────
+  # One row per order. Used for order count and order-level revenue metrics.
+  - name: orders
+    model: ref('int_orders_with_metrics')
+    description: >
+      Order grain — one row per order. Use for order counts, AOV, and
+      fulfilment metrics. Revenue here is pre-rolled-up from item level.
+    defaults:
+      agg_time_dimension: created_at
+
+    entities:
+      - name: order
+        type: primary
+        expr: order_id
+      - name: user
+        type: foreign
+        expr: user_id
+
+    dimensions:
+      - name: created_at
+        type: time
+        type_params:
+          time_granularity: day
+      - name: status
+        type: categorical
+      - name: gender
+        type: categorical
+      - name: has_return
+        type: categorical
+
+    measures:
+      - name: order_count
+        description: "Count of distinct orders"
+        agg: count_distinct
+        expr: order_id
+      - name: order_revenue
+        description: "Sum of order-level revenue"
+        agg: sum
+        expr: order_revenue
+      - name: order_cost
+        description: "Sum of order-level cost"
+        agg: sum
+        expr: order_cost
+      - name: order_gross_profit
+        description: "Sum of order-level gross profit"
+        agg: sum
+        expr: order_gross_profit
+
+
+  # ── Customers (customer grain) ─────────────────────────────────────────────
+  # One row per customer. Use for customer counts and demographic segmentation.
+  - name: customers
+    model: ref('mart_customer_ltv')
+    description: >
+      Customer grain — one row per customer. Provides LTV tiers, segments,
+      and demographic dimensions for customer-level analysis.
+    defaults:
+      agg_time_dimension: user_created_at
+
+    entities:
+      - name: user
+        type: primary
+        expr: user_id
+
+    dimensions:
+      - name: user_created_at
+        type: time
+        type_params:
+          time_granularity: day
+      - name: customer_segment
+        type: categorical
+      - name: ltv_tier
+        type: categorical
+      - name: gender
+        type: categorical
+      - name: city
+        type: categorical
+      - name: state
+        type: categorical
+      - name: country
+        type: categorical
+      - name: traffic_source
+        type: categorical
+
+    measures:
+      - name: customer_count
+        description: "Count of distinct customers"
+        agg: count_distinct
+        expr: user_id

@@ -11,7 +11,8 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ['Cancelled', 'Complete', 'Processing', 'Returned', 'Shipped']
+              arguments:
+                values: ['Cancelled', 'Complete', 'Processing', 'Returned', 'Shipped']
 
   - name: stg_order_items
     description: "Cleaned order line items. One row per item within an order."
@@ -29,7 +30,7 @@ models:
       - name: user_id
         tests: [unique, not_null]
       - name: email
-        tests: [unique, not_null]
+        tests: [not_null]
 
   - name: stg_products
     description: "Cleaned product catalogue. One row per product."

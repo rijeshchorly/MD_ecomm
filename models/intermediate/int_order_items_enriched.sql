@@ -63,4 +63,4 @@ int_order_items_enriched as (
         on oi.inventory_item_id = inv.inventory_item_id
 )
 
-select * from enriched
+select * from int_order_items_enriched

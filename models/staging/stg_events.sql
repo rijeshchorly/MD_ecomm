@@ -1,5 +1,5 @@
 with events as (
-    select * from {{ source('MD_Ecomm', 'events') }}
+    select * from {{ source('Ecomm', 'events') }}
 ),
 
 stg_events as (

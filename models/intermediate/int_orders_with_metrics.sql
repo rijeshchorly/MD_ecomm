@@ -66,4 +66,4 @@ int_orders_with_metrics as (
         on o.order_id = ia.order_id
 )
 
-select * from final
+select * from int_orders_with_metrics
