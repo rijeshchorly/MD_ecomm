@@ -26,6 +26,7 @@ semantic_models:
 
     dimensions:
       - name: created_at
+        label: Created At (time)
         type: time
         type_params:
           time_granularity: day
