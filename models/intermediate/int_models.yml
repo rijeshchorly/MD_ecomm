@@ -40,3 +40,18 @@ models:
     columns:
       - name: session_id
         tests: [unique, not_null]
+
+  - name: int_user_sessions
+    description: >
+      One row per user with web-session behaviour aggregated alongside lifetime
+      purchase history. Bridges sessions and orders so downstream marts can
+      compare acquisition source against customer value.
+    columns:
+      - name: user_id
+        tests: [unique, not_null]
+      - name: session_conversion_rate
+        description: "Share of the user's sessions that contained a purchase event."
+      - name: primary_traffic_source
+        description: "Modal traffic source across the user's sessions."
+      - name: sessions_before_first_order
+        description: "Count of sessions that started before the user's first order. Null for users with no orders."
