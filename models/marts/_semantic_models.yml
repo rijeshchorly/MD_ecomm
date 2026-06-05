@@ -58,7 +58,7 @@ semantic_models:
         agg: sum
         expr: gross_profit
       - name: units_sold
-        description: "Count of order items"
+        description: "Count of order items RR"
         agg: count
         expr: order_item_id
       - name: returned_units
