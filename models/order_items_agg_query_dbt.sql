@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 SELECT "id",
     "user_id",
     COUNT(DISTINCT "id") AS "id_count_distinct",
