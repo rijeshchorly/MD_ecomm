@@ -10,7 +10,7 @@ with orders as (
 ),
 
 order_items_enriched as (
-    select * from {{ ref('int_order_items_enriched') }}
+    select * from {{ ref('int_order__items__enriched') }}
 ),
 
 item_agg as (
