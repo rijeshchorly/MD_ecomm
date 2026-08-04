@@ -3,7 +3,7 @@ semantic_models:
   # ── Order Items (line-item grain) ─────────────────────────────────────────
   # Core fact for revenue, margin, and return metrics. One row per order item.
   - name: order_items
-    model: ref('int_order__items__enriched')
+    model: ref('int_order_items_enriched')
     description: >
       Order line item grain — one row per order item. Primary source for
       revenue, cost, gross profit, and return rate metrics.
