@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_order__items__enriched
+  - name: int_order_items_enriched
     description: >
       Order line items joined with product catalogue and inventory cost data.
       Core grain for all revenue and margin calculations. One row per order item.
