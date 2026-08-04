@@ -6,7 +6,7 @@
 */
 
 with order_items as (
-    select * from {{ ref('int_order__items__enriched') }}
+    select * from {{ ref('int_order_items_enriched') }}
     where status not in ('Cancelled')
 ),
 
