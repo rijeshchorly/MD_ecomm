@@ -10,6 +10,16 @@ metrics:
       measure: revenue
     filter: |
       {{ Dimension('order_item__status') }} != 'Cancelled'
+      
+  - name: completed_revenue
+    label: "Completed Revenue"
+    description: >
+      Total sale value of order items with a Shipped status.
+    type: simple
+    type_params:
+      measure: revenue
+    filter: |
+      {{ Dimension('order_item__status') }} = 'Shipped'
 
   - name: total_cost
     label: "Total Cost"
