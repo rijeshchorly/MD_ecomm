@@ -36,7 +36,7 @@ models:
   - name: int_session_events
     description: >
       Web events rolled up to session level with funnel-step counts and a
-      conversion flag. One row per session.
+      conversion flag. One row per session. I am testing this 7th August
     columns:
       - name: session_id
         tests: [unique, not_null]
