@@ -36,7 +36,16 @@ session_agg as (
 
         case when sum(case when event_type = 'purchase' then 1 else 0 end) > 0
              then true else false
-        end                                         as converted
+        end                                         as converted,
+         -- cart abandonment inputs
+        case when sum(case when event_type = 'cart' then 1 else 0 end) > 0
+             then 1 else 0
+        end                                         as has_cart_activity,
+
+        case when sum(case when event_type = 'cart'     then 1 else 0 end) > 0
+              and sum(case when event_type = 'purchase' then 1 else 0 end) = 0
+             then 1 else 0
+        end                                         as is_abandoned_cart
 
     from events
     group by 1, 2, 3, 4, 5, 6
