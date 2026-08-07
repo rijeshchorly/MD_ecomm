@@ -40,7 +40,11 @@ models:
     columns:
       - name: session_id
         tests: [unique, not_null]
-
+      - name: has_cart_activity
+        description: 1 if the session had at least one cart event, else 0
+      - name: is_abandoned_cart
+        description: 1 if the session reached the cart but did not purchase, else 0
+        
   - name: int_user_sessions
     description: >
       One row per user with web-session behaviour aggregated alongside lifetime
